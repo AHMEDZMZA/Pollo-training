@@ -11,6 +11,8 @@ import 'package:pollo/features/home/presentation/manager/home_cubit.dart';
 import 'package:pollo/features/products/presentation/manager/products_cubit.dart';
 import 'package:pollo/features/splash_onboarding/presentation/manager/onboarding_cubit.dart';
 
+import '../../features/auth/data/repo/auth_repo.dart';
+
 final GetIt getIt = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
@@ -27,10 +29,10 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory<OnboardingCubit>(() => OnboardingCubit());
   // <---------------------------------------------------------------------------->
   // Auth
-  getIt.registerLazySingleton(
-    () => AuthRepoImpl(apiService: getIt.get<ApiService>()),
+  getIt.registerLazySingleton<AuthRepo>(
+        () => AuthRepoImpl(apiService: getIt.get<ApiService>()),
   );
-  getIt.registerFactory<AuthCubit>(() => AuthCubit());
+  getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt.get<AuthRepo>()));
   // <---------------------------------------------------------------------------->
   // Bottom Nav
   getIt.registerFactory<BottomNavCubit>(() => BottomNavCubit());

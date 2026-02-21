@@ -16,7 +16,12 @@ import 'package:pollo/features/auth/presentation/manager/auth_cubit.dart';
 class SignInForm extends StatelessWidget {
   const SignInForm({
     super.key,
+    required this.emailController,
+    required this.passwordController,
   });
+
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +30,7 @@ class SignInForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         AppTextField(
+          controller: emailController,
           title: context.tr(LocaleKeys.email),
           hintText: context.tr(LocaleKeys.enterYourEmail),
           keyboardType: TextInputType.emailAddress,
@@ -36,6 +42,7 @@ class SignInForm extends StatelessWidget {
           buildWhen: (previous, current) => current is TextObscureChanged,
           builder: (context, state) {
             return AppTextField(
+              controller: passwordController,
               title: context.tr(LocaleKeys.password),
               hintText: context.tr(LocaleKeys.enterYourPassword),
               keyboardType: TextInputType.visiblePassword,
@@ -45,7 +52,8 @@ class SignInForm extends StatelessWidget {
                 },
                 child: SvgPicture.asset(AppSvgs.eye),
               ),
-              validator: (value) => AppValidator.validateEmptyField(context, value),
+              validator: (value) =>
+                  AppValidator.validateEmptyField(context, value),
               obscureText: cubit.obscureText,
             );
           },

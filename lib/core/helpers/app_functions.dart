@@ -13,7 +13,7 @@ class AppFunctions {
 
       final payload = json.decode(utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))));
 
-      final exp = payload['exp'];
+      final exp = (payload['exp'] as num).toInt();
       final DateTime expiryDate = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
 
       return DateTime.now().isAfter(expiryDate);

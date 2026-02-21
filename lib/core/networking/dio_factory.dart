@@ -30,12 +30,31 @@ class DioFactory {
   static Future<void> initialize() async {
     if (_dioInstance != null) return;
 
+    // _dioInstance = Dio(
+    //   BaseOptions(
+    //     baseUrl: ApiEndpoints.baseUrl, // Base API URL
+    //     connectTimeout: _defaultTimeout,
+    //     receiveTimeout: _defaultTimeout,
+    //     sendTimeout: _defaultTimeout,
+    //     headers: {
+    //       'Accept': 'application/json',
+    //       'Content-Type': 'application/json',
+    //     },
+    //   ),
+    // );
+    //----------------------------------------
     _dioInstance = Dio(
       BaseOptions(
-        baseUrl: ApiEndpoints.baseUrl, // Base API URL
+        baseUrl: ApiEndpoints.baseUrl,
         connectTimeout: _defaultTimeout,
         receiveTimeout: _defaultTimeout,
         sendTimeout: _defaultTimeout,
+        followRedirects: false,
+        validateStatus: (status) => status != null && status < 500,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
       ),
     );
 

@@ -4,6 +4,8 @@ import 'package:pollo/core/helpers/extensions.dart';
 import 'package:pollo/core/resources/assets.dart';
 import 'package:pollo/core/routing/routes.dart';
 
+import '../../../../core/helpers/app_functions.dart';
+import '../../../../core/shared_pref/shared_pref_helper.dart';
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
 
@@ -21,7 +23,12 @@ class _SplashViewState extends State<SplashView> {
   void _startDelay() async {
     await Future.delayed(const Duration(seconds: 1));
     if (mounted) {
-      context.pushReplacementNamed(Routes.onboarding);
+      final token = SharedPrefHelper.getString(key: SharedPrefKeys.token);
+      if (token.isNotEmpty && !AppFunctions.isTokenExpired(token)) {
+        context.pushReplacementNamed(Routes.bottomNav);
+      } else {
+        context.pushReplacementNamed(Routes.onboarding);
+      }
     }
   }
 

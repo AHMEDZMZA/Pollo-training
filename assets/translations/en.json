@@ -70,6 +70,7 @@
   "mustAcceptTerms": "You must accept the terms and conditions.",
   "invalidDate": "Enter a valid date.",
   "name": "Name",
+  "lastname": "Last Name",
   "phone": "Phone",
   "dontWorry": "Don’t worry! it occurs. please enter the email address linked with your account.",
   "enter4DigitCode": "Please enter the 4 digit code that send to your email address",

@@ -28,7 +28,7 @@ class Pollo extends StatelessWidget {
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
               onGenerateRoute: appRouter.generateRouter,
-              initialRoute: Routes.onboarding,
+              initialRoute: Routes.splash,
               theme: AppTheme.appTheme(context),
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,

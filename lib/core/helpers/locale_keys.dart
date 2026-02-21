@@ -73,6 +73,7 @@ abstract class LocaleKeys {
   static const mustAcceptTerms = 'mustAcceptTerms';
   static const invalidDate = 'invalidDate';
   static const name = 'name';
+  static const lastname = 'lastName';
   static const phone = 'phone';
   static const dontWorry = 'dontWorry';
   static const enter4DigitCode = 'enter4DigitCode';
