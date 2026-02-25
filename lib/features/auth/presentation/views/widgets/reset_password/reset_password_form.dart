@@ -9,6 +9,8 @@ import 'package:pollo/core/resources/assets.dart';
 import 'package:pollo/core/widgets/app_text_field.dart';
 import 'package:pollo/features/auth/presentation/manager/auth_cubit.dart';
 
+import '../../../manager/auth_state.dart';
+
 class ResetPasswordForm extends StatelessWidget {
   const ResetPasswordForm({super.key});
 
@@ -31,7 +33,7 @@ class ResetPasswordForm extends StatelessWidget {
                 child: SvgPicture.asset(AppSvgs.eye),
               ),
               validator: (value) => AppValidator.validateEmptyField(context, value),
-              obscureText: cubit.obscureText,
+              obscureText: state.isObscure,
             ),
             AppTextField(
               title: context.tr(LocaleKeys.confirmPassword),
@@ -44,7 +46,7 @@ class ResetPasswordForm extends StatelessWidget {
                 child: SvgPicture.asset(AppSvgs.eye),
               ),
               validator: (value) => AppValidator.validateEmptyField(context, value),
-              obscureText: cubit.obscureText,
+              obscureText: state.isObscure,
             ),
           ],
         );

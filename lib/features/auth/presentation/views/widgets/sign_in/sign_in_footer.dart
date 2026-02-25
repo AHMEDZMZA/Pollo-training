@@ -10,53 +10,43 @@ import 'package:pollo/core/routing/routes.dart';
 import 'package:pollo/core/widgets/app_button.dart';
 import 'package:pollo/core/widgets/gradient_text.dart';
 
+import '../../../../../../core/helpers/request_state.dart';
+import '../../../../../../core/helpers/toast_helper.dart';
 import '../../../manager/auth_cubit.dart';
+import '../../../manager/auth_state.dart';
 
 class SignInFooter extends StatelessWidget {
   const SignInFooter({
     super.key,
-    required this.emailController,
-    required this.passwordController,
-    required this.formKey,
   });
-
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-  final GlobalKey<FormState> formKey;
 
   @override
   Widget build(BuildContext context) {
+    final AuthCubit cubit = context.read<AuthCubit>();
     return BlocConsumer<AuthCubit, AuthState>(
+      buildWhen: RequestStateWhen.changed((state) => state.authState),
+      listenWhen: RequestStateWhen.completed((state) => state.authState),
       listener: (context, state) {
-        if (state is AuthSuccessState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(state.authModel.firstName ?? ""),
-            backgroundColor: Colors.green,
-          ));
-          context.pushNamed(Routes.bottomNav);
-        } else if (state is AuthErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(state.errorMessage),
-            backgroundColor: Colors.red,
-          ));
-        }
+        state.authState.listen(onSuccess: (data) {
+          ToastHelper.showSuccessToast("Success");
+          context.pushNamedAndRemoveUntil(Routes.bottomNav,
+              predicate: (route) => false);
+        }, onFailure: (message) {
+          ToastHelper.showErrorToast(message);
+        });
       },
       builder: (context, state) {
         return Column(
           children: [
-            state is AuthLoadingState
-                ? const CircularProgressIndicator()
-                : AppButton(
-                    title: context.tr(LocaleKeys.signIn),
-                    onTap: () {
-                      if (formKey.currentState!.validate()) {
-                        context.read<AuthCubit>().login(
-                              email: emailController.text.trim(),
-                              password: passwordController.text,
-                            );
-                      }
-                    },
-                  ),
+            AppButton(
+              title: context.tr(LocaleKeys.signIn),
+              onTap: () {
+                if (cubit.globalKey.currentState!.validate()) {
+                  cubit.login();
+                }
+              },
+              isLoading: state.authState.isLoading,
+            ),
             16.verticalSpace,
             GestureDetector(
               onTap: () {

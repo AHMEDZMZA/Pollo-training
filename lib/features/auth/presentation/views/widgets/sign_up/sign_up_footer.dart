@@ -4,111 +4,49 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pollo/core/helpers/extensions.dart';
 import 'package:pollo/core/helpers/locale_keys.dart';
+import 'package:pollo/core/helpers/request_state.dart';
+import 'package:pollo/core/helpers/toast_helper.dart';
 import 'package:pollo/core/resources/colors.dart';
 import 'package:pollo/core/resources/styles.dart';
+import 'package:pollo/core/routing/routes.dart';
 import 'package:pollo/core/widgets/app_button.dart';
 import 'package:pollo/core/widgets/gradient_text.dart';
 
 import '../../../manager/auth_cubit.dart';
-//
-// class SignUpFooter extends StatelessWidget {
-//   const SignUpFooter({
-//     super.key,
-//   });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         AppButton(
-//           title: context.tr(LocaleKeys.signUp),
-//           onTap: () {},
-//         ),
-//         16.verticalSpace,
-//         GestureDetector(
-//           onTap: () {
-//             context.pop();
-//           },
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             spacing: 4.w,
-//             children: [
-//               Text(
-//                 context.tr(LocaleKeys.haveAccount),
-//                 style: TextStyles.style14Medium(color: AppColors.secondaryText),
-//               ),
-//               GradientText(
-//                 context.tr(LocaleKeys.signIn),
-//                 style: TextStyles.style16SemiBold(),
-//               )
-//             ],
-//           ),
-//         )
-//       ],
-//     );
-//   }
-// }
-
+import '../../../manager/auth_state.dart';
 
 class SignUpFooter extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController firstNameController;
-  final TextEditingController  lastNameController;
-  final TextEditingController emailController;
-  final TextEditingController phoneController;
-  final TextEditingController passwordController;
-  final TextEditingController confirmPasswordController;
-
   const SignUpFooter({
     super.key,
-    required this.formKey,
-    required this.firstNameController,
-    required this.lastNameController,
-    required this.emailController,
-    required this.phoneController,
-    required this.passwordController,
-    required this.confirmPasswordController,
   });
 
   @override
   Widget build(BuildContext context) {
+    final AuthCubit cubit = context.read<AuthCubit>();
+
     return BlocConsumer<AuthCubit, AuthState>(
+      buildWhen: RequestStateWhen.changed((state) => state.authState),
+      listenWhen: RequestStateWhen.completed((state) => state.authState),
       listener: (context, state) {
-        if (state is AuthSuccessState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.authModel.firstName ?? ""),
-              backgroundColor: Colors.green,
-            ),
-          );
-        } else if (state is AuthErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
+        state.authState.listen(onSuccess: (data) {
+          ToastHelper.showSuccessToast("Success");
+          context.pushNamedAndRemoveUntil(Routes.bottomNav,
+              predicate: (route) => false);
+        }, onFailure: (message) {
+          ToastHelper.showErrorToast(message);
+        });
       },
       builder: (context, state) {
         return Column(
           children: [
-            state is AuthLoadingState
-                ? const CircularProgressIndicator()
-                : AppButton(
+            AppButton(
               title: context.tr(LocaleKeys.signUp),
               onTap: () {
-                if (formKey.currentState!.validate()) {
-                  context.read<AuthCubit>().register(
-                    firstName: firstNameController.text.trim(),
-                    lastName: lastNameController.text.trim(),
-                    email: emailController.text.trim(),
-                    phone: phoneController.text.trim().isEmpty ? null : phoneController.text.trim(),
-                    password: passwordController.text,
-                    confirmPassword: confirmPasswordController.text,
-                  );
+                if (cubit.globalKey.currentState!.validate()) {
+                  cubit.register();
                 }
               },
+              isLoading: state.authState.isLoading,
             ),
             16.verticalSpace,
             GestureDetector(

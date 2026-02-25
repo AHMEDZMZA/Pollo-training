@@ -5,18 +5,26 @@ import 'package:pollo/core/helpers/app_functions.dart';
 import 'package:pollo/features/home/presentation/manager/home_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../manager/home_state.dart';
+
 class HomeCarouselIndicator extends StatelessWidget {
   const HomeCarouselIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final HomeCubit cubit = context.read<HomeCubit>();
 
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
+        // final activeIndex = state.maybeWhen(
+        //   orElse: () => 0,
+        //   carouselIndexChanged: (index) => index,
+        //   initial: () => 0,
+        // );
         return IgnorePointer(
           child: AnimatedSmoothIndicator(
-            activeIndex: cubit.activeIndex,
+            activeIndex: state.activeIndex,
             count: 3,
             effect: ExpandingDotsEffect(
               dotWidth: 8.w,
@@ -25,7 +33,9 @@ class HomeCarouselIndicator extends StatelessWidget {
               dotColor: const Color(0xffDBD5C6),
               activeDotColor: Colors.white,
             ),
-            textDirection: AppFunctions.isEnglish(context) ? TextDirection.ltr : TextDirection.rtl,
+            textDirection: AppFunctions.isEnglish(context)
+                ? TextDirection.ltr
+                : TextDirection.rtl,
           ),
         );
       },

@@ -1,56 +1,104 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../data/model/auth_model.dart';
+import 'package:pollo/core/helpers/request_state.dart';
+import '../../../../core/networking/dio_factory.dart';
+import '../../data/model/login_request_model.dart';
+import '../../data/model/register_request_model.dart';
 import '../../data/repo/auth_repo.dart';
-
-part 'auth_state.dart';
+import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this.authRepo) : super(AuthInitial());
+  AuthCubit(this.authRepo) : super(const AuthState()) {
+    globalKey = GlobalKey<FormState>();
+    firstNameController = TextEditingController();
+    lastNameController = TextEditingController();
+    emailController = TextEditingController();
+    phoneController = TextEditingController();
+    passwordController = TextEditingController();
+    confirmPasswordController = TextEditingController();
+  }
+
+  @override
+  Future<void> close() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    return super.close();
+  }
+
   final AuthRepo authRepo;
-  bool obscureText = false;
+  late final GlobalKey<FormState> globalKey;
+  late final TextEditingController firstNameController;
+  late final TextEditingController lastNameController;
+  late final TextEditingController emailController;
+  late final TextEditingController phoneController;
+  late final TextEditingController passwordController;
+  late final TextEditingController confirmPasswordController;
 
   void toggleObscure() {
-    obscureText = !obscureText;
-    emit(TextObscureChanged());
+    emit(state.copyWith(
+      isObscure: !state.isObscure,
+    ));
   }
 
-  Future<void> register({
-    required String firstName,
-    String? lastName,
-    required String email,
-    String? phone,
-    required String password,
-    required String confirmPassword,
-  }) async {
-    emit(AuthLoadingState());
+  // ================= REGISTER =================
+
+  Future<void> register() async {
+    emit(state.copyWith(authState: const LoadingState()));
+    final request = RegisterRequestModel(
+        firstName: firstNameController.text.trim(),
+        lastName: lastNameController.text.trim(),
+        email: emailController.text.trim(),
+        phone: phoneController.text.trim(),
+        password: passwordController.text.trim(),
+        confirmPassword: confirmPasswordController.text.trim());
     final result = await authRepo.register(
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phone: phone,
-      password: password,
-      confirmPassword: confirmPassword,
+      registerRequestModel: request,
     );
     result.fold(
-      (failure) => emit(AuthErrorState(failure.message)),
-      (authModel) => emit(AuthSuccessState(authModel)),
+      (failure) =>
+          emit(state.copyWith(authState: FailureState(failure.message))),
+      (authModel) async {
+        if (authModel.token != null) {
+          await DioFactory.updateAuthToken(authModel.token!);
+        }
+
+        emit(state.copyWith(authState: SuccessState(authModel)));
+      },
     );
   }
 
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
-    emit(AuthLoadingState());
+  // ================= LOGIN =================
+
+  Future<void> login() async {
+    emit(state.copyWith(
+      authState: const LoadingState(),
+    ));
+
+    final request = LoginRequestModel(
+      identifier: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
     final result = await authRepo.login(
-      email: email,
-      password: password,
+      loginRequestModel: request,
     );
     result.fold(
-      (failure) => emit(AuthErrorState(failure.message)),
-      (authModel) => emit(AuthSuccessState(authModel)),
-    );
+        (failure) => emit(
+              state.copyWith(
+                authState: FailureState(failure.message),
+              ),
+            ), (authModel) async {
+      if (authModel.token != null) {
+        await DioFactory.updateAuthToken(authModel.token!);
+      }
+      emit(
+        state.copyWith(
+          authState: SuccessState(authModel),
+        ),
+      );
+    });
   }
 }

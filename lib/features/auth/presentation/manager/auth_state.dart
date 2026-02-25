@@ -1,22 +1,13 @@
-part of 'auth_cubit.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pollo/core/helpers/request_state.dart';
+import '../../data/model/auth_model.dart';
 
-@immutable
-sealed class AuthState {}
+part 'auth_state.freezed.dart';
 
-final class AuthInitial extends AuthState {}
-
-final class TextObscureChanged extends AuthState {}
-
-final class AuthLoadingState extends AuthState {}
-
-final class AuthSuccessState extends AuthState {
-  final AuthModel authModel;
-
-  AuthSuccessState(this.authModel);
-}
-
-final class AuthErrorState extends AuthState {
-  final String errorMessage;
-
-  AuthErrorState(this.errorMessage);
+@freezed
+abstract class AuthState with _$AuthState {
+  const factory AuthState({
+    @Default(false) bool isObscure,
+    @Default(InitialState()) RequestState<AuthModel> authState,
+  }) = _AuthState;
 }
