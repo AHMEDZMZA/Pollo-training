@@ -23,6 +23,7 @@ class EditProfileView extends StatelessWidget {
 
   final ProfileResponse profileResponse;
 
+
   @override
   Widget build(BuildContext context) {
 
