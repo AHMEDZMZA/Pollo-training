@@ -29,4 +29,17 @@ class HomeCubit extends Cubit<HomeState> {
       ),
     );
   }
+
+  Future<void> getSubCategories(int id) async {
+    emit(state.copyWith(subCategoriesState: const LoadingState()));
+    final result = await repoHome.getSubCategories(id);
+    result.fold(
+      (failure) => emit(
+        state.copyWith(subCategoriesState: FailureState(failure.message)),
+      ),
+      (list) => emit(
+        state.copyWith(subCategoriesState: SuccessState(list)),
+      ),
+    );
+  }
 }

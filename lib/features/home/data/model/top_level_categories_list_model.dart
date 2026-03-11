@@ -23,13 +23,4 @@ class TopLevelCategoriesListModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'image': image,
-      'name': name,
-      'type': type,
-      'created_at': createdAt.toIso8601String(),
-    };
-  }
 }

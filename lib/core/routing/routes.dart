@@ -15,4 +15,7 @@ abstract class Routes {
   static const String myAds = '/myAds';
   static const String contactUs = '/contactUs';
   static const String settings = '/settings';
+  static const String changePassword = '/changePassword';
+  static const String editProfile = '/editProfile';
+
 }

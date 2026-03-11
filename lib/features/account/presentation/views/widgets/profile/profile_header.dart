@@ -5,10 +5,13 @@ import 'package:pollo/core/helpers/locale_keys.dart';
 import 'package:pollo/core/resources/colors.dart';
 import 'package:pollo/core/resources/styles.dart';
 import 'package:pollo/core/widgets/gradient_text.dart';
+import 'package:pollo/features/account/data/models/profile_response.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key});
+  const ProfileHeader({super.key, required this.profileResponse,  this.onEditTap,});
 
+  final ProfileResponse profileResponse;
+  final VoidCallback? onEditTap;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,8 +21,6 @@ class ProfileHeader extends StatelessWidget {
             AppColors.primary2.withAlpha(160),
             AppColors.primary.withAlpha(160),
           ],
-          // begin: AlignmentGeometry.topLeft,
-          // end: AlignmentGeometry.bottomRight,
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -33,26 +34,6 @@ class ProfileHeader extends StatelessWidget {
               context.tr(LocaleKeys.profile),
               style: TextStyles.style22SemiBold(color: Colors.white),
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     SizedBox(
-            //       width: 24.w,
-            //       child: Icon(
-            //         Icons.arrow_back_ios_rounded,
-            //         size: 24.w,
-            //         color: Colors.white,
-            //       ),
-            //     ),
-            //     Text(
-            //       context.tr(LocaleKeys.profile),
-            //       style: TextStyles.style22SemiBold(color: Colors.white),
-            //     ),
-            //     SizedBox(
-            //       width: 24.w,
-            //     ),
-            //   ],
-            // ),
             24.verticalSpace,
             Row(
               spacing: 8.w,
@@ -73,7 +54,7 @@ class ProfileHeader extends StatelessWidget {
                   ),
                   child: Center(
                     child: GradientText(
-                      'K',
+                      profileResponse.firstName[0],
                       style: TextStyles.style24SemiBold(),
                     ),
                   ),
@@ -83,11 +64,11 @@ class ProfileHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Khaled Mohamed',
+                      "${profileResponse.firstName} ${profileResponse.lastName}",
                       style: TextStyles.style22SemiBold(color: Colors.white),
                     ),
                     Text(
-                      '+201110101010',
+                      profileResponse.email,
                       style: TextStyles.style16Medium(color: Colors.white),
                     ),
                   ],

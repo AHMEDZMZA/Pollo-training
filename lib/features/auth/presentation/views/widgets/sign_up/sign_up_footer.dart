@@ -24,22 +24,27 @@ class SignUpFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthCubit cubit = context.read<AuthCubit>();
 
-    return BlocConsumer<AuthCubit, AuthState>(
-      buildWhen: RequestStateWhen.changed((state) => state.authState),
-      listenWhen: RequestStateWhen.completed((state) => state.authState),
-      listener: (context, state) {
-        state.authState.listen(onSuccess: (data) {
-          ToastHelper.showSuccessToast("Success");
-          context.pushNamedAndRemoveUntil(Routes.bottomNav,
-              predicate: (route) => false);
-        }, onFailure: (message) {
-          ToastHelper.showErrorToast(message);
-        });
-      },
-      builder: (context, state) {
-        return Column(
-          children: [
-            AppButton(
+    return Column(
+      children: [
+        BlocConsumer<AuthCubit, AuthState>(
+          buildWhen: RequestStateWhen.changed((state) => state.authState),
+          listenWhen: RequestStateWhen.completed((state) => state.authState),
+          listener: (context, state) {
+            state.authState.listen(
+              onSuccess: (data) {
+                ToastHelper.showSuccessToast("Success");
+                context.pushNamedAndRemoveUntil(
+                  Routes.bottomNav,
+                  predicate: (route) => false,
+                );
+              },
+              onFailure: (message) {
+                ToastHelper.showErrorToast(message);
+              },
+            );
+          },
+          builder: (context, state) {
+            return AppButton(
               title: context.tr(LocaleKeys.signUp),
               onTap: () {
                 if (cubit.globalKey.currentState!.validate()) {
@@ -47,29 +52,28 @@ class SignUpFooter extends StatelessWidget {
                 }
               },
               isLoading: state.authState.isLoading,
-            ),
-            16.verticalSpace,
-            GestureDetector(
-              onTap: () => context.pop(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 4.w,
-                children: [
-                  Text(
-                    context.tr(LocaleKeys.haveAccount),
-                    style: TextStyles.style14Medium(
-                        color: AppColors.secondaryText),
-                  ),
-                  GradientText(
-                    context.tr(LocaleKeys.signIn),
-                    style: TextStyles.style16SemiBold(),
-                  ),
-                ],
+            );
+          },
+        ),
+        16.verticalSpace,
+        GestureDetector(
+          onTap: () => context.pop(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 4.w,
+            children: [
+              Text(
+                context.tr(LocaleKeys.haveAccount),
+                style: TextStyles.style14Medium(color: AppColors.secondaryText),
               ),
-            ),
-          ],
-        );
-      },
+              GradientText(
+                context.tr(LocaleKeys.signIn),
+                style: TextStyles.style16SemiBold(),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

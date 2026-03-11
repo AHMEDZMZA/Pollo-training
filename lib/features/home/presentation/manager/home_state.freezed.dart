@@ -19,6 +19,8 @@ mixin _$HomeState {
   int get activeIndex => throw _privateConstructorUsedError;
   RequestState<List<TopLevelCategoriesListModel>> get categoriesState =>
       throw _privateConstructorUsedError;
+  RequestState<List<SubCategoryModel>> get subCategoriesState =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -34,7 +36,8 @@ abstract class $HomeStateCopyWith<$Res> {
   @useResult
   $Res call(
       {int activeIndex,
-      RequestState<List<TopLevelCategoriesListModel>> categoriesState});
+      RequestState<List<TopLevelCategoriesListModel>> categoriesState,
+      RequestState<List<SubCategoryModel>> subCategoriesState});
 }
 
 /// @nodoc
@@ -54,6 +57,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   $Res call({
     Object? activeIndex = null,
     Object? categoriesState = null,
+    Object? subCategoriesState = null,
   }) {
     return _then(_value.copyWith(
       activeIndex: null == activeIndex
@@ -64,6 +68,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.categoriesState
           : categoriesState // ignore: cast_nullable_to_non_nullable
               as RequestState<List<TopLevelCategoriesListModel>>,
+      subCategoriesState: null == subCategoriesState
+          ? _value.subCategoriesState
+          : subCategoriesState // ignore: cast_nullable_to_non_nullable
+              as RequestState<List<SubCategoryModel>>,
     ) as $Val);
   }
 }
@@ -78,7 +86,8 @@ abstract class _$$HomeStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {int activeIndex,
-      RequestState<List<TopLevelCategoriesListModel>> categoriesState});
+      RequestState<List<TopLevelCategoriesListModel>> categoriesState,
+      RequestState<List<SubCategoryModel>> subCategoriesState});
 }
 
 /// @nodoc
@@ -96,6 +105,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   $Res call({
     Object? activeIndex = null,
     Object? categoriesState = null,
+    Object? subCategoriesState = null,
   }) {
     return _then(_$HomeStateImpl(
       activeIndex: null == activeIndex
@@ -106,6 +116,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.categoriesState
           : categoriesState // ignore: cast_nullable_to_non_nullable
               as RequestState<List<TopLevelCategoriesListModel>>,
+      subCategoriesState: null == subCategoriesState
+          ? _value.subCategoriesState
+          : subCategoriesState // ignore: cast_nullable_to_non_nullable
+              as RequestState<List<SubCategoryModel>>,
     ));
   }
 }
@@ -114,7 +128,9 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 
 class _$HomeStateImpl implements _HomeState {
   const _$HomeStateImpl(
-      {this.activeIndex = 0, this.categoriesState = const InitialState()});
+      {this.activeIndex = 0,
+      this.categoriesState = const InitialState(),
+      this.subCategoriesState = const InitialState()});
 
   @override
   @JsonKey()
@@ -122,10 +138,13 @@ class _$HomeStateImpl implements _HomeState {
   @override
   @JsonKey()
   final RequestState<List<TopLevelCategoriesListModel>> categoriesState;
+  @override
+  @JsonKey()
+  final RequestState<List<SubCategoryModel>> subCategoriesState;
 
   @override
   String toString() {
-    return 'HomeState(activeIndex: $activeIndex, categoriesState: $categoriesState)';
+    return 'HomeState(activeIndex: $activeIndex, categoriesState: $categoriesState, subCategoriesState: $subCategoriesState)';
   }
 
   @override
@@ -136,11 +155,14 @@ class _$HomeStateImpl implements _HomeState {
             (identical(other.activeIndex, activeIndex) ||
                 other.activeIndex == activeIndex) &&
             (identical(other.categoriesState, categoriesState) ||
-                other.categoriesState == categoriesState));
+                other.categoriesState == categoriesState) &&
+            (identical(other.subCategoriesState, subCategoriesState) ||
+                other.subCategoriesState == subCategoriesState));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, activeIndex, categoriesState);
+  int get hashCode => Object.hash(
+      runtimeType, activeIndex, categoriesState, subCategoriesState);
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -153,14 +175,17 @@ class _$HomeStateImpl implements _HomeState {
 
 abstract class _HomeState implements HomeState {
   const factory _HomeState(
-      {final int activeIndex,
-      final RequestState<List<TopLevelCategoriesListModel>>
-          categoriesState}) = _$HomeStateImpl;
+          {final int activeIndex,
+          final RequestState<List<TopLevelCategoriesListModel>> categoriesState,
+          final RequestState<List<SubCategoryModel>> subCategoriesState}) =
+      _$HomeStateImpl;
 
   @override
   int get activeIndex;
   @override
   RequestState<List<TopLevelCategoriesListModel>> get categoriesState;
+  @override
+  RequestState<List<SubCategoryModel>> get subCategoriesState;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.

@@ -1,12 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pollo/core/helpers/extensions.dart';
 import 'package:pollo/core/helpers/locale_keys.dart';
+import 'package:pollo/core/networking/dio_factory.dart';
 import 'package:pollo/core/resources/assets.dart';
 import 'package:pollo/core/routing/routes.dart';
 import 'package:pollo/features/account/data/models/profile_setting_model.dart';
 import 'package:pollo/features/account/presentation/views/widgets/profile/profile_settings_list_view_item.dart';
+
+import '../../../../../../core/helpers/request_state.dart';
+import '../../../../data/models/profile_response.dart';
+import '../../../manager/account_cubit.dart';
 
 class ProfileSettingsListView extends StatelessWidget {
   const ProfileSettingsListView({super.key});
@@ -17,12 +23,28 @@ class ProfileSettingsListView extends StatelessWidget {
       ProfileSettingModel(
         svg: AppSvgs.edit,
         title: context.tr(LocaleKeys.editProfile),
-        onTap: () {},
+        onTap: () async {
+          final state = context.read<AccountCubit>().state.accountState;
+          if (state is SuccessState<ProfileResponse>) {
+            await Navigator.pushNamed(
+              context,
+              Routes.editProfile,
+              arguments: {'profileResponse': state.data},
+            );
+            if (context.mounted) {
+              context.read<AccountCubit>().getProfile(); // ✅ بعد ما يرجع
+            }
+          }
+        },
       ),
       ProfileSettingModel(
         svg: AppSvgs.unlock,
         title: context.tr(LocaleKeys.changePassword),
-        onTap: () {},
+        onTap: () {
+          context.pushNamed(
+            Routes.changePassword,
+          );
+        },
       ),
       ProfileSettingModel(
         svg: AppSvgs.settings,
@@ -40,6 +62,7 @@ class ProfileSettingsListView extends StatelessWidget {
         svg: AppSvgs.logOut,
         title: context.tr(LocaleKeys.logOut),
         onTap: () {
+          DioFactory.clearAuthToken();
           context.pushNamedAndRemoveUntil(
             Routes.onboarding,
             predicate: (route) => false,
@@ -69,4 +92,3 @@ class ProfileSettingsListView extends StatelessWidget {
     );
   }
 }
-

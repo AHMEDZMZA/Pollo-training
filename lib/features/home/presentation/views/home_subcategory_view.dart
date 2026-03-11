@@ -7,14 +7,17 @@ import 'package:pollo/features/home/presentation/manager/home_cubit.dart';
 import 'package:pollo/features/home/presentation/views/widgets/home_subcategory/home_subcategory_body.dart';
 
 class HomeSubcategoryView extends StatelessWidget {
-  const HomeSubcategoryView({super.key});
+  const HomeSubcategoryView({super.key, required this.categoryId, required this.categoryName});
+
+  final int categoryId;
+  final String categoryName;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt.get<HomeCubit>(),
+      create: (context) => getIt.get<HomeCubit>()..getSubCategories(categoryId),
       child: Scaffold(
-        appBar: const CustomAppBar(title: 'Veterinarians'),
+        appBar: CustomAppBar(title: categoryName),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: const HomeSubcategoryBody(),

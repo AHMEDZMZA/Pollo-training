@@ -20,8 +20,7 @@ class ApiEndpoints {
   /// Categories
   static const String categoriesList = '/categories';
   static const String categoriesCreate = '/categories/average-prices';
-
-  // static const  String categoriesSubCategories(int id) = '/categories/$id/sub-categories';
+  static String categoriesSubCategories(int id) => '/categories/$id/sub-categories';
   static const String categoriesTopLevel = '/categories/top-level';
 
   /// <---------------------------------------------------------------------------->

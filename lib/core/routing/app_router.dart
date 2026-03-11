@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pollo/core/routing/routes.dart';
+import 'package:pollo/features/account/presentation/views/change_password_view.dart';
+import 'package:pollo/features/account/presentation/views/edit_profile_view.dart';
 import 'package:pollo/features/account/presentation/views/settings_view.dart';
 import 'package:pollo/features/auth/presentation/views/forget_password_view.dart';
 import 'package:pollo/features/auth/presentation/views/reset_password_view.dart';
@@ -61,9 +63,13 @@ class AppRouter {
           builder: (_) => const AppBottomNavBarView(),
         );
       case Routes.homeSubcategory:
+        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => const HomeSubcategoryView(),
+          builder: (_) => HomeSubcategoryView(
+            categoryId: args['id'],
+            categoryName: args['name'],
+          ),
         );
       case Routes.products:
         return MaterialPageRoute(
@@ -95,6 +101,16 @@ class AppRouter {
           settings: settings,
           builder: (_) => const SettingsView(),
         );
+      case Routes.changePassword:
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => const ChangePassword());
+      case Routes.editProfile:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => EditProfileView(
+                  profileResponse: args['profileResponse'],
+                ));
     }
     return null;
   }
