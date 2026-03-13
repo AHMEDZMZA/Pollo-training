@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 class ProfileRequestModel {
+  final int? id;
   final String? firstName;
   final String? lastName;
   final String? email;
@@ -11,6 +12,7 @@ class ProfileRequestModel {
 
 
   ProfileRequestModel({
+    this.id,
      this.firstName,
      this.lastName,
      this.email,
@@ -22,6 +24,7 @@ class ProfileRequestModel {
 
   Map<String, dynamic> toJson() {
     return {
+      if (id != null) 'id': id,
       if (firstName != null && firstName!.isNotEmpty) 'first_name': firstName,
       if (lastName != null && lastName!.isNotEmpty) 'last_name': lastName,
       if (email != null && email!.isNotEmpty) 'email': email,
@@ -35,7 +38,8 @@ class ProfileRequestModel {
 
   Future<FormData> toFormData() async {
     final map = <String, dynamic>{};
-
+    if (firstName != null && firstName!.isNotEmpty) map['first_name'] = firstName;
+    if (lastName != null && lastName!.isNotEmpty) map['last_name'] = lastName;
     if (email != null && email!.isNotEmpty) map['email'] = email;
     if (phone != null && phone!.isNotEmpty) map['phone'] = phone;
     if (image != null && image!.isNotEmpty) {
@@ -44,7 +48,9 @@ class ProfileRequestModel {
         filename: image!.split('/').last,
       );
     }
-
     return FormData.fromMap(map);
   }
 }
+
+
+

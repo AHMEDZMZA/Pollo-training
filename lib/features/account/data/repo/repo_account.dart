@@ -5,6 +5,7 @@ import 'package:pollo/features/account/data/models/profile_request_model.dart';
 import 'package:pollo/features/account/data/models/profile_response.dart';
 
 import '../models/change_password_request_model.dart';
+import '../models/delete_response_model.dart';
 
 abstract class RepoAccount {
   Future<Either<Failure, ProfileResponse>> getProfile();
@@ -14,4 +15,6 @@ abstract class RepoAccount {
 
   Future<Either<Failure, ProfileResponse>> updateProfile(
       {required ProfileRequestModel profileRequestModel});
+
+  Future<Either<Failure, DeleteResponseModel>> deleteAccount(int id);
 }

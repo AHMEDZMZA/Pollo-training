@@ -10,6 +10,8 @@ import 'package:pollo/core/widgets/app_button.dart';
 import 'package:pollo/core/widgets/app_drop_down.dart';
 import 'package:pollo/features/products/presentation/manager/products_cubit.dart';
 
+import '../../../manager/products_state.dart';
+
 class ProductsFilterBottomSheet extends StatelessWidget {
   const ProductsFilterBottomSheet({
     super.key,
@@ -38,12 +40,14 @@ class ProductsFilterBottomSheet extends StatelessWidget {
                 style: TextStyles.style16Medium(),
               ),
               BlocBuilder<ProductsCubit, ProductsState>(
-                buildWhen: (previous, current) => current is PriceRangeUpdated,
+                buildWhen: (previous, current) =>
+                    previous.priceRange != current.priceRange,
                 builder: (context, state) {
                   final RangeValues rangeValues = cubit.selectedPriceRange;
                   return Text(
                     '${rangeValues.start.toInt()} EGP - ${rangeValues.end.toInt()} EGP',
-                    style: TextStyles.style14Medium(color: AppColors.secondaryText),
+                    style: TextStyles.style14Medium(
+                        color: AppColors.secondaryText),
                   );
                 },
               ),
@@ -51,7 +55,8 @@ class ProductsFilterBottomSheet extends StatelessWidget {
           ),
           16.verticalSpace,
           BlocBuilder<ProductsCubit, ProductsState>(
-            buildWhen: (previous, current) => current is PriceRangeUpdated,
+            buildWhen: (previous, current) =>
+                previous.priceRange != current.priceRange,
             builder: (context, state) {
               final RangeValues rangeValues = cubit.selectedPriceRange;
               return RangeSlider(

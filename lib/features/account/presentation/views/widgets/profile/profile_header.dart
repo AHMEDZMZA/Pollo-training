@@ -8,10 +8,15 @@ import 'package:pollo/core/widgets/gradient_text.dart';
 import 'package:pollo/features/account/data/models/profile_response.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key, required this.profileResponse,  this.onEditTap,});
+  const ProfileHeader({
+    super.key,
+    required this.profileResponse,
+    this.onEditTap,
+  });
 
   final ProfileResponse profileResponse;
   final VoidCallback? onEditTap;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,11 +58,19 @@ class ProfileHeader extends StatelessWidget {
                     ],
                   ),
                   child: Center(
-                    child: GradientText(
-                      profileResponse.firstName[0],
-                      style: TextStyles.style24SemiBold(),
+                      child: ClipOval(
+                    child: Image.network(
+                      profileResponse.image,
+                      width: 80.r,
+                      height: 80.r,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          GradientText(
+                        profileResponse.firstName[0],
+                        style: TextStyles.style24SemiBold(),
+                      ),
                     ),
-                  ),
+                  )),
                 ),
                 Column(
                   spacing: 8.h,

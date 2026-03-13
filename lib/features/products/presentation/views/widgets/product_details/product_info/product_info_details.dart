@@ -4,10 +4,15 @@ import 'package:pollo/core/helpers/locale_keys.dart';
 import 'package:pollo/core/resources/styles.dart';
 import 'package:pollo/features/products/presentation/views/widgets/product_details/product_info/read_more_text.dart';
 
+import '../../../../../data/model/product_details_model.dart';
+
 class ProductInfoDetails extends StatelessWidget {
   const ProductInfoDetails({
     super.key,
+    required this.productDetailsModel,
   });
+
+  final ProductDetailsModel productDetailsModel;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,9 @@ class ProductInfoDetails extends StatelessWidget {
           context.tr(LocaleKeys.details),
           style: TextStyles.style18SemiBold(),
         ),
-        const ProductInfoDetailsReadMoreText(),
+        ProductInfoDetailsReadMoreText(
+          productDetailsModel: productDetailsModel,
+        ),
       ],
     );
   }

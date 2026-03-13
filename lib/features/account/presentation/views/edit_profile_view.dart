@@ -9,7 +9,6 @@ import 'package:pollo/features/account/data/models/profile_response.dart';
 import '../../../../core/helpers/locale_keys.dart';
 import '../../../../core/helpers/request_state.dart';
 import '../../../../core/helpers/toast_helper.dart';
-import '../../../../core/helpers/validation/app_validator.dart';
 import '../../../../core/resources/assets.dart';
 import '../../../../core/resources/colors.dart';
 import '../../../../core/resources/styles.dart';
@@ -23,14 +22,13 @@ class EditProfileView extends StatelessWidget {
 
   final ProfileResponse profileResponse;
 
-
   @override
   Widget build(BuildContext context) {
 
     return BlocProvider(
       create: (_) => getIt.get<AccountCubit>()
-        ..emailController.text = profileResponse.email
-        ..phoneController.text = profileResponse.phone,
+        ..firstNameController.text = profileResponse.firstName
+        ..lastNameNameController.text = profileResponse.lastName,
       child: BlocConsumer<AccountCubit, AccountState>(
         listenWhen:
             RequestStateWhen.completed((state) => state.updateProfileState),
@@ -44,8 +42,8 @@ class EditProfileView extends StatelessWidget {
           );
         },
         buildWhen: (prev, curr) =>
-            prev.selectedImage != curr.selectedImage ||
-            prev.updateProfileState != curr.updateProfileState,
+            prev.updateProfileState != curr.updateProfileState ||
+            prev.selectedImage != curr.selectedImage,
         builder: (context, state) {
           final cubit = context.read<AccountCubit>();
           return Scaffold(
@@ -69,8 +67,7 @@ class EditProfileView extends StatelessWidget {
                       56.verticalSpace,
                       Text(
                         context.tr(LocaleKeys.editProfile),
-                        style:
-                            TextStyles.style22SemiBold(color: Colors.white),
+                        style: TextStyles.style22SemiBold(color: Colors.white),
                       ),
                       24.verticalSpace,
                       24.verticalSpace,
@@ -81,33 +78,83 @@ class EditProfileView extends StatelessWidget {
                 // ── Form ──
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16.w, vertical: 24.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
                     child: Column(
                       children: [
-                        AppTextField(
-                          controller: cubit.emailController,
-                          title: context.tr(LocaleKeys.email),
-                          hintText: profileResponse.email,
-                          keyboardType: TextInputType.emailAddress,
-                          suffixIcon: SvgPicture.asset(AppSvgs.person),
-                          validator: null
+                        GestureDetector(
+                          onTap: () => cubit.pickImage(),
+                          child: Center(
+                            child: Stack(
+                              children: [
+                                Container(
+                                  width: 80.r,
+                                  height: 80.r,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xffECECEC),
+                                  ),
+                                  child: Center(
+                                    child: ClipOval(
+                                      child: state.selectedImage != null
+                                          ? Image.file(
+                                        File(state.selectedImage!),
+                                        fit: BoxFit.cover,
+                                      )
+                                          : profileResponse.image.isNotEmpty
+                                          ? Image.network(
+                                        profileResponse.image,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (_, __, ___) => GradientText(
+                                          profileResponse.firstName[0],
+                                          style: TextStyles.style24SemiBold(),
+                                        ),
+                                      )
+                                          : GradientText(
+                                        profileResponse.firstName[0],
+                                        style: TextStyles.style24SemiBold(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: Container(
+                                    padding: EdgeInsets.all(4.r),
+                                    decoration: const BoxDecoration(
+                                      color: AppColors.primary,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(Icons.camera_alt, size: 16.r, color: Colors.white),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         16.verticalSpace,
                         AppTextField(
-                          controller: cubit.phoneController,
-                          title: context.tr(LocaleKeys.phone),
-                          hintText: profileResponse.phone,
-                          keyboardType: TextInputType.phone,
-                          suffixIcon: SvgPicture.asset(AppSvgs.phone),
-                          validator: null
-                        ),
+                            controller: cubit.firstNameController,
+                            title: context.tr(LocaleKeys.changeName),
+                            hintText: profileResponse.firstName,
+                            keyboardType: TextInputType.name,
+                            suffixIcon: SvgPicture.asset(AppSvgs.person),
+                            validator: null),
+                        16.verticalSpace,
+                        AppTextField(
+                            controller: cubit.lastNameNameController,
+                            title: context.tr(LocaleKeys.changeName),
+                            hintText: profileResponse.lastName,
+                            keyboardType: TextInputType.name,
+                            suffixIcon: SvgPicture.asset(AppSvgs.person),
+                            validator: null),
                         24.verticalSpace,
                         AppButton(
                           title: context.tr(LocaleKeys.saveChanges),
                           isLoading: state.updateProfileState.isLoading,
                           onTap: () {
-                              cubit.updateProfile();
+                            cubit.updateProfile();
                           },
                         ),
                       ],

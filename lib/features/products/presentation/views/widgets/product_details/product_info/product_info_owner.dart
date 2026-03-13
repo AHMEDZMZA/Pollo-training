@@ -8,12 +8,24 @@ import 'package:pollo/core/resources/colors.dart';
 import 'package:pollo/core/resources/styles.dart';
 import 'package:pollo/core/widgets/gradient_text.dart';
 import 'package:pollo/core/widgets/star_rating.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../../../../data/model/product_details_model.dart';
 
 class ProductInfoOwner extends StatelessWidget {
-  const ProductInfoOwner({super.key});
+  const ProductInfoOwner({super.key, required this.productDetailsModel});
+
+  final ProductDetailsModel productDetailsModel;
 
   @override
   Widget build(BuildContext context) {
+    final String fullName =
+        '${productDetailsModel.merchant.firstName} ${productDetailsModel.merchant.lastName}';
+    final String firstLetter =
+    productDetailsModel.merchant.firstName.isNotEmpty
+        ? productDetailsModel.merchant.firstName[0].toUpperCase()
+        : '?';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -34,7 +46,7 @@ class ProductInfoOwner extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  'K',
+                  firstLetter,
                   style: TextStyles.style22SemiBold(color: Colors.white),
                 ),
               ),
@@ -46,18 +58,29 @@ class ProductInfoOwner extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Khaled Mohamed',
+                        fullName,
                         style: TextStyles.style16Medium(),
                       ),
                       const Spacer(),
-                      SvgPicture.asset(
-                        AppSvgs.phoneColored,
-                        width: 16.w,
-                      ),
-                      4.horizontalSpace,
-                      GradientText(
-                        context.tr(LocaleKeys.contact),
-                        style: TextStyles.style12Bold(),
+                      GestureDetector(
+                        onTap: () {
+                          final phone =
+                              productDetailsModel.merchantInfo.merchantPhone;
+                          launchUrl(Uri.parse('tel:$phone'));
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              AppSvgs.phoneColored,
+                              width: 16.w,
+                            ),
+                            4.horizontalSpace,
+                            GradientText(
+                              context.tr(LocaleKeys.contact),
+                              style: TextStyles.style12Bold(),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -65,11 +88,12 @@ class ProductInfoOwner extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${context.tr(LocaleKeys.memberSince)} Oct 7, 2022',
-                        style: TextStyles.style12Medium(color: AppColors.secondaryText),
+                        '${context.tr(LocaleKeys.memberSince)} ${productDetailsModel.createdAt}',
+                        style: TextStyles.style12Medium(
+                            color: AppColors.secondaryText),
                       ),
                       StarRating(
-                        rating: 4,
+                        rating: productDetailsModel.reviewsAvgRating,
                         onRatingUpdate: (value) {},
                         ignoreGestures: true,
                         itemSize: 18.w,
@@ -78,9 +102,9 @@ class ProductInfoOwner extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
           ],
-        )
+        ),
       ],
     );
   }

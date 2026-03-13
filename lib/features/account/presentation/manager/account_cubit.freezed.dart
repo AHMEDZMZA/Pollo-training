@@ -24,6 +24,8 @@ mixin _$AccountState {
       throw _privateConstructorUsedError;
   RequestState<ProfileResponse> get updateProfileState =>
       throw _privateConstructorUsedError;
+  RequestState<DeleteResponseModel> get deleteAccountState =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of AccountState
   /// with the given fields replaced by the non-null parameter values.
@@ -43,7 +45,8 @@ abstract class $AccountStateCopyWith<$Res> {
       String? selectedImage,
       RequestState<ProfileResponse> accountState,
       RequestState<ChangePasswordResponseModel> changePasswordState,
-      RequestState<ProfileResponse> updateProfileState});
+      RequestState<ProfileResponse> updateProfileState,
+      RequestState<DeleteResponseModel> deleteAccountState});
 }
 
 /// @nodoc
@@ -66,6 +69,7 @@ class _$AccountStateCopyWithImpl<$Res, $Val extends AccountState>
     Object? accountState = null,
     Object? changePasswordState = null,
     Object? updateProfileState = null,
+    Object? deleteAccountState = null,
   }) {
     return _then(_value.copyWith(
       isObscure: null == isObscure
@@ -88,6 +92,10 @@ class _$AccountStateCopyWithImpl<$Res, $Val extends AccountState>
           ? _value.updateProfileState
           : updateProfileState // ignore: cast_nullable_to_non_nullable
               as RequestState<ProfileResponse>,
+      deleteAccountState: null == deleteAccountState
+          ? _value.deleteAccountState
+          : deleteAccountState // ignore: cast_nullable_to_non_nullable
+              as RequestState<DeleteResponseModel>,
     ) as $Val);
   }
 }
@@ -105,7 +113,8 @@ abstract class _$$AccountStateImplCopyWith<$Res>
       String? selectedImage,
       RequestState<ProfileResponse> accountState,
       RequestState<ChangePasswordResponseModel> changePasswordState,
-      RequestState<ProfileResponse> updateProfileState});
+      RequestState<ProfileResponse> updateProfileState,
+      RequestState<DeleteResponseModel> deleteAccountState});
 }
 
 /// @nodoc
@@ -126,6 +135,7 @@ class __$$AccountStateImplCopyWithImpl<$Res>
     Object? accountState = null,
     Object? changePasswordState = null,
     Object? updateProfileState = null,
+    Object? deleteAccountState = null,
   }) {
     return _then(_$AccountStateImpl(
       isObscure: null == isObscure
@@ -148,6 +158,10 @@ class __$$AccountStateImplCopyWithImpl<$Res>
           ? _value.updateProfileState
           : updateProfileState // ignore: cast_nullable_to_non_nullable
               as RequestState<ProfileResponse>,
+      deleteAccountState: null == deleteAccountState
+          ? _value.deleteAccountState
+          : deleteAccountState // ignore: cast_nullable_to_non_nullable
+              as RequestState<DeleteResponseModel>,
     ));
   }
 }
@@ -160,7 +174,8 @@ class _$AccountStateImpl implements _AccountState {
       this.selectedImage = null,
       this.accountState = const InitialState(),
       this.changePasswordState = const InitialState(),
-      this.updateProfileState = const InitialState()});
+      this.updateProfileState = const InitialState(),
+      this.deleteAccountState = const InitialState()});
 
   @override
   @JsonKey()
@@ -177,10 +192,13 @@ class _$AccountStateImpl implements _AccountState {
   @override
   @JsonKey()
   final RequestState<ProfileResponse> updateProfileState;
+  @override
+  @JsonKey()
+  final RequestState<DeleteResponseModel> deleteAccountState;
 
   @override
   String toString() {
-    return 'AccountState(isObscure: $isObscure, selectedImage: $selectedImage, accountState: $accountState, changePasswordState: $changePasswordState, updateProfileState: $updateProfileState)';
+    return 'AccountState(isObscure: $isObscure, selectedImage: $selectedImage, accountState: $accountState, changePasswordState: $changePasswordState, updateProfileState: $updateProfileState, deleteAccountState: $deleteAccountState)';
   }
 
   @override
@@ -197,12 +215,20 @@ class _$AccountStateImpl implements _AccountState {
             (identical(other.changePasswordState, changePasswordState) ||
                 other.changePasswordState == changePasswordState) &&
             (identical(other.updateProfileState, updateProfileState) ||
-                other.updateProfileState == updateProfileState));
+                other.updateProfileState == updateProfileState) &&
+            (identical(other.deleteAccountState, deleteAccountState) ||
+                other.deleteAccountState == deleteAccountState));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isObscure, selectedImage,
-      accountState, changePasswordState, updateProfileState);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isObscure,
+      selectedImage,
+      accountState,
+      changePasswordState,
+      updateProfileState,
+      deleteAccountState);
 
   /// Create a copy of AccountState
   /// with the given fields replaced by the non-null parameter values.
@@ -219,7 +245,8 @@ abstract class _AccountState implements AccountState {
           final String? selectedImage,
           final RequestState<ProfileResponse> accountState,
           final RequestState<ChangePasswordResponseModel> changePasswordState,
-          final RequestState<ProfileResponse> updateProfileState}) =
+          final RequestState<ProfileResponse> updateProfileState,
+          final RequestState<DeleteResponseModel> deleteAccountState}) =
       _$AccountStateImpl;
 
   @override
@@ -232,6 +259,8 @@ abstract class _AccountState implements AccountState {
   RequestState<ChangePasswordResponseModel> get changePasswordState;
   @override
   RequestState<ProfileResponse> get updateProfileState;
+  @override
+  RequestState<DeleteResponseModel> get deleteAccountState;
 
   /// Create a copy of AccountState
   /// with the given fields replaced by the non-null parameter values.

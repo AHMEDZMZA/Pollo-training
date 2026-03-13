@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pollo/core/helpers/app_functions.dart';
@@ -8,15 +9,21 @@ import 'package:pollo/core/resources/assets.dart';
 import 'package:pollo/core/resources/colors.dart';
 import 'package:pollo/core/resources/styles.dart';
 import 'package:pollo/core/widgets/star_rating.dart';
+import 'package:pollo/features/products/data/model/list_products_model.dart';
+
+import '../../../../../favorite/presentation/manager/favorite_cubit.dart';
+import '../../../../../favorite/presentation/manager/favorite_state.dart';
 
 class ProductsListViewItem extends StatelessWidget {
   const ProductsListViewItem({
     super.key,
     required this.heroTag,
+    required this.productsModel, this.onTap,
   });
 
   final String heroTag;
-
+  final ListProductsModel productsModel;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,18 +35,18 @@ class ProductsListViewItem extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-            // borderRadius: BorderRadiusGeometry.horizontal(
-            //   left: AppFunctions.isEnglish(context) ? Radius.circular(8.r) : null,
-            //   right: AppFunctions.isEnglish(context) ? null : Radius.circular(8.r),
-            // ),
             borderRadius: BorderRadius.horizontal(
-              left: AppFunctions.isEnglish(context) ? Radius.circular(8.r) : Radius.zero,
-              right: AppFunctions.isEnglish(context) ? Radius.zero : Radius.circular(8.r),
+              left: AppFunctions.isEnglish(context)
+                  ? Radius.circular(8.r)
+                  : Radius.zero,
+              right: AppFunctions.isEnglish(context)
+                  ? Radius.zero
+                  : Radius.circular(8.r),
             ),
             child: Hero(
               tag: heroTag,
-              child: Image.asset(
-                AppImages.cat,
+              child: Image.network(
+                productsModel.image,
                 height: 155.h,
                 width: 130.w,
                 fit: BoxFit.cover,
@@ -58,36 +65,46 @@ class ProductsListViewItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'White Cat',
+                          productsModel.name,
                           style: TextStyles.style16Medium(),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      SvgPicture.asset(
-                        AppSvgs.heartOutlined,
-                        width: 24.r,
-                        height: 24.r,
+                      BlocBuilder<FavoriteCubit, FavoriteState>(
+                        builder: (context, state) {
+                          final isLiked = state.likedIds.contains(productsModel.id);
+                          return GestureDetector(
+                            onTap: onTap,
+                            child: SvgPicture.asset(
+                              isLiked ? AppSvgs.heartFill : AppSvgs.heartOutlined,
+                              width: 24.r,
+                              height: 24.r,
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
                   Text(
-                    '${context.tr(LocaleKeys.price)} 500 L.E',
+                    '${context.tr(LocaleKeys.price)} ${productsModel.price}',
                     style: TextStyles.style16Medium(),
                   ),
                   StarRating(
-                    rating: 3.2,
+                    rating: productsModel.merchant?.reviewsAvgRating ?? 0,
                     ignoreGestures: true,
                     onRatingUpdate: (value) {},
                   ),
                   Text(
-                    'Sharkia - Zagazig',
-                    style: TextStyles.style14Medium(color: AppColors.secondaryText),
+                    '${productsModel.state.name} - ${productsModel.city.name}',
+                    style: TextStyles.style14Medium(
+                        color: AppColors.secondaryText),
                   ),
                   Text(
                     context.tr(
                       LocaleKeys.daysAgo.plural(2),
                     ),
-                    style: TextStyles.style14Medium(color: AppColors.secondaryText),
+                    style: TextStyles.style14Medium(
+                        color: AppColors.secondaryText),
                   ),
                 ],
               ),

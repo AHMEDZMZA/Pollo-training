@@ -8,7 +8,8 @@ abstract class AccountState with _$AccountState {
     @Default(InitialState()) RequestState<ProfileResponse> accountState,
     @Default(InitialState())
     RequestState<ChangePasswordResponseModel> changePasswordState,
+    @Default(InitialState()) RequestState<ProfileResponse> updateProfileState,
     @Default(InitialState())
-    RequestState<ProfileResponse> updateProfileState,
+    RequestState<DeleteResponseModel> deleteAccountState,
   }) = _AccountState;
 }

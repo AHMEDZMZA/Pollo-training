@@ -14,13 +14,15 @@ class ApiEndpoints {
   static const String merchantsUpdate = '/merchant/update';
   static const String merchantsChangePassword = '/merchant/change-password';
   static const String merchantsReview = '/merchant/review';
-  static const String merchantsDelete = 'merchant/destroy';
+  static const String merchantsDelete = '/merchant/destroy';
 
   /// <---------------------------------------------------------------------------->
   /// Categories
   static const String categoriesList = '/categories';
   static const String categoriesCreate = '/categories/average-prices';
-  static String categoriesSubCategories(int id) => '/categories/$id/sub-categories';
+
+  static String categoriesSubCategories(int id) =>
+      '/categories/$id/sub-categories';
   static const String categoriesTopLevel = '/categories/top-level';
 
   /// <---------------------------------------------------------------------------->
@@ -32,6 +34,7 @@ class ApiEndpoints {
   static const String productsStore = '/product/store';
   static const String productsVisit = '/product/visit';
   static const String productsReview = '/product/review';
-  static const String productsLike = '/products/1/like';
+
+  static String productsLike(int id) => '/products/$id/like';
   static const String productsUpdate = '/products/update/266';
 }

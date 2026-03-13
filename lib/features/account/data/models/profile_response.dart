@@ -2,9 +2,9 @@ class ProfileResponse {
   final int id;
   final String firstName;
   final String lastName;
-  final String phone;
+  final String? phone;
   final String email;
-  final String username;
+  final String? username;
   final String image;
   final double reviewsAvgRating;
   final String createdAt;
@@ -13,25 +13,26 @@ class ProfileResponse {
     required this.id,
     required this.firstName,
     required this.lastName,
-    required this.phone,
+    this.phone,
     required this.email,
-    required this.username,
+    this.username,
     required this.image,
     required this.reviewsAvgRating,
     required this.createdAt,
   });
 
   factory ProfileResponse.fromJson(Map<String, dynamic> json) {
+    final merchant = json['merchant'] ?? json;
     return ProfileResponse(
-      id: json['id'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      phone: json['phone'],
-      email: json['email'],
-      username: json['username'],
-      image: json['image'],
-      reviewsAvgRating: (json['reviews_avg_rating'] as num).toDouble(),
-      createdAt: json['created_at'],
+      id: merchant['id'],
+      firstName: merchant['first_name'] ?? '',
+      lastName: merchant['last_name'] ?? '',
+      phone: merchant['phone'],
+      email: merchant['email'] ?? '',
+      username: merchant['username'],
+      image: merchant['image'] ?? '',
+      reviewsAvgRating: (merchant['reviews_avg_rating'] ?? 0).toDouble(),
+      createdAt: merchant['created_at'] ?? '',
     );
   }
 }

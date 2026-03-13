@@ -43,7 +43,8 @@ class HomeSubcategoryGridViewBuilder extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          context.pushNamed(Routes.products);
+                          context.pushNamed(Routes.products,
+                              arguments: subCategories[index]);
                         },
                         child: HomeSubcategoryGridViewItem(
                           subCategoryModel: subCategories[index],

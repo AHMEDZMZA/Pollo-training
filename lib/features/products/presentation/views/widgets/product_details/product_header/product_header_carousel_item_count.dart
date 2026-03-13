@@ -6,21 +6,23 @@ import 'package:pollo/core/resources/assets.dart';
 import 'package:pollo/core/resources/styles.dart';
 import 'package:pollo/core/widgets/animation_wrapper/animation_wrapper.dart';
 import 'package:pollo/features/products/presentation/manager/products_cubit.dart';
+import '../../../../manager/products_state.dart';
 
 class ProductHeaderCarouselItemCount extends StatelessWidget {
   const ProductHeaderCarouselItemCount({
     super.key,
+    required this.totalCount,
   });
+
+  final int totalCount;
 
   @override
   Widget build(BuildContext context) {
-    final ProductsCubit cubit = context.read<ProductsCubit>();
     return AnimationWrapper(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.white),
-          // borderRadius: BorderRadiusGeometry.circular(6.r),
           borderRadius: BorderRadius.circular(6.r),
         ),
         child: Row(
@@ -33,10 +35,11 @@ class ProductHeaderCarouselItemCount extends StatelessWidget {
               height: 16.h,
             ),
             BlocBuilder<ProductsCubit, ProductsState>(
-              buildWhen: (previous, current) => current is CarouselIndexChanged,
+              buildWhen: (previous, current) =>
+              previous.activeIndex != current.activeIndex,
               builder: (context, state) {
                 return Text(
-                  '${cubit.activeIndex + 1} / 4',
+                  '${state.activeIndex + 1} / $totalCount',
                   style: TextStyles.style12Bold(color: Colors.white),
                 );
               },

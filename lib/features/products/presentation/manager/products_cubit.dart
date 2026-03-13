@@ -1,40 +1,57 @@
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-part 'products_state.dart';
+import 'package:pollo/features/products/data/repo/products_repo.dart';
+import 'package:pollo/features/products/presentation/manager/products_state.dart';
+import '../../../../core/helpers/request_state.dart';
 
 class ProductsCubit extends Cubit<ProductsState> {
-  ProductsCubit() : super(ProductsInitial()) {
-    selectedPriceRange = RangeValues(minPrice, maxPrice);
-  }
+  ProductsCubit(this.repoProducts) : super(const ProductsState());
+
+  final ProductsRepo repoProducts;
 
   final double minPrice = 0;
-  final double maxPrice = 1000;
-  late RangeValues selectedPriceRange;
+  final double maxPrice = 10000;
 
-  void updatePriceRange(RangeValues rangeValues) {
-    selectedPriceRange = rangeValues;
-    emit(PriceRangeUpdated());
+  RangeValues get selectedPriceRange =>
+      state.priceRange ?? RangeValues(minPrice, maxPrice);
+
+  String? get sortBy => state.sortBy;
+
+  Future<void> getProducts() async {
+    emit(state.copyWith(productsState: const LoadingState()));
+    final result = await repoProducts.getProducts();
+    result.fold(
+          (failure) => emit(
+        state.copyWith(productsState: FailureState(failure.message)),
+      ),
+          (products) => emit(
+        state.copyWith(productsState: SuccessState(products)),
+      ),
+    );
   }
 
-  String? sortBy;
-
-  void updateSortBy(String value) {
-    if (sortBy == value) {
-      sortBy = null;
-      emit(SortByUpdated());
-      return;
-    }
-    sortBy = value;
-    emit(SortByUpdated());
+  Future<void> getInfoProducts(int id) async {
+    emit(state.copyWith(infoProductState: const LoadingState()));
+    final result = await repoProducts.getProductsInfo(id);
+    result.fold(
+          (failure) => emit(
+        state.copyWith(infoProductState: FailureState(failure.message)),
+      ),
+          (products) => emit(
+        state.copyWith(infoProductState: SuccessState(products)),
+      ),
+    );
   }
 
-  final CarouselSliderController carouselController = CarouselSliderController();
-  int activeIndex = 0;
+  void changeActiveIndex(int index) {
+    emit(state.copyWith(activeIndex: index));
+  }
 
-  void setCurrentPage(int index) {
-    activeIndex = index;
-    emit(CarouselIndexChanged());
+  void updateSortBy(String? value) {
+    emit(state.copyWith(sortBy: value));
+  }
+
+  void updatePriceRange(RangeValues priceRange) {
+    emit(state.copyWith(priceRange: priceRange));
   }
 }

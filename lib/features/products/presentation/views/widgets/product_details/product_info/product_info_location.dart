@@ -7,9 +7,13 @@ import 'package:pollo/core/resources/assets.dart';
 import 'package:pollo/core/resources/colors.dart';
 import 'package:pollo/core/resources/styles.dart';
 import 'package:pollo/core/widgets/gradient_text.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../../../../data/model/product_details_model.dart';
 
 class ProductInfoLocation extends StatelessWidget {
-  const ProductInfoLocation({super.key});
+  const ProductInfoLocation({super.key, required this.productDetailsModel});
+  final ProductDetailsModel productDetailsModel;
 
   @override
   Widget build(BuildContext context) {
@@ -44,17 +48,27 @@ class ProductInfoLocation extends StatelessWidget {
                 color: Colors.black.withAlpha(51),
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 4.h),
-              decoration: BoxDecoration(
-                border: const GradientBoxBorder(gradient: AppColors.appGradient),
-                // borderRadius: BorderRadiusGeometry.circular(10.r),
-                borderRadius: BorderRadius.circular(10.r),
-                color: const Color(0xffE9EBEF),
-              ),
-              child: GradientText(
-                context.tr(LocaleKeys.seeLocation),
-                style: TextStyles.style16SemiBold(),
+            GestureDetector(
+              onTap: () {
+                if (productDetailsModel.latitude != null &&
+                    productDetailsModel.longitude != null) {
+                  final url =
+                      'https://www.google.com/maps/search/?api=1&query=${productDetailsModel.latitude},${productDetailsModel.longitude}';
+                  launchUrl(Uri.parse(url));
+                }
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 4.h),
+                decoration: BoxDecoration(
+                  border: const GradientBoxBorder(gradient: AppColors.appGradient),
+                  // borderRadius: BorderRadiusGeometry.circular(10.r),
+                  borderRadius: BorderRadius.circular(10.r),
+                  color: const Color(0xffE9EBEF),
+                ),
+                child: GradientText(
+                  context.tr(LocaleKeys.seeLocation),
+                  style: TextStyles.style16SemiBold(),
+                ),
               ),
             ),
           ],

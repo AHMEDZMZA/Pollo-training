@@ -18,6 +18,8 @@ import 'package:pollo/features/products/presentation/views/products_view.dart';
 import 'package:pollo/features/splash_onboarding/presentation/views/onboarding_view.dart';
 import 'package:pollo/features/splash_onboarding/presentation/views/splash_view.dart';
 
+import '../../features/home/data/model/sub_category_model.dart';
+
 class AppRouter {
   Route<dynamic>? generateRouter(RouteSettings settings) {
     //final Object? arguments = settings.arguments;
@@ -72,14 +74,19 @@ class AppRouter {
           ),
         );
       case Routes.products:
+        final args = settings.arguments as SubCategoryModel;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => const ProductsView(),
+          builder: (_) => ProductsView(subCategoryModel: args),
         );
       case Routes.productsDetails:
+        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => const ProductsDetailsView(),
+          builder: (_) => ProductsDetailsView(
+            heroTag: args['heroTag'],
+            productId: args['productId'],
+          ),
         );
       case Routes.about:
         return MaterialPageRoute(

@@ -6,6 +6,7 @@ import 'package:pollo/features/account/presentation/views/widgets/profile/profil
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/helpers/extensions.dart';
 import '../../../../core/helpers/toast_helper.dart';
+import '../../../../core/networking/dio_factory.dart';
 import '../../../../core/routing/routes.dart';
 import '../manager/account_cubit.dart';
 
@@ -16,9 +17,20 @@ class AccountView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt.get<AccountCubit>()..getProfile(),
-      child: BlocBuilder<AccountCubit, AccountState>(
+      child: BlocConsumer<AccountCubit, AccountState>(
         buildWhen: (previous, current) =>
-        previous.accountState != current.accountState,
+            previous.accountState != current.accountState,
+        listenWhen: (prev, curr) =>
+            prev.deleteAccountState != curr.deleteAccountState,
+        listener: (context, state) {
+          state.deleteAccountState.listen(
+            onFailure: (message) => ToastHelper.showErrorToast(message),
+            onSuccess: (_) {
+              DioFactory.clearAuthToken();
+              context.pushReplacementNamed(Routes.signIn);
+            },
+          );
+        },
         builder: (context, state) {
           return Column(
             children: [
@@ -40,7 +52,7 @@ class AccountView extends StatelessWidget {
                   return const SizedBox.shrink();
                 },
                 onLoading: () =>
-                const Center(child: CircularProgressIndicator()),
+                    const Center(child: CircularProgressIndicator()),
               ),
               const ProfileSettingsListView(),
             ],
