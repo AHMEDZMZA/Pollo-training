@@ -16,7 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$FavoriteState {
-  RequestState<FavoriteModel> get favoriteState =>
+  RequestState<FavoriteResponseModelStoreAndDelete> get favoriteStoreState =>
+      throw _privateConstructorUsedError;
+  RequestState<FavoriteResponseModelStoreAndDelete> get favoriteDeleteState =>
+      throw _privateConstructorUsedError;
+  RequestState<List<WishlistModel>> get favoriteGetState =>
       throw _privateConstructorUsedError;
   Set<int> get likedIds => throw _privateConstructorUsedError;
 
@@ -33,7 +37,11 @@ abstract class $FavoriteStateCopyWith<$Res> {
           FavoriteState value, $Res Function(FavoriteState) then) =
       _$FavoriteStateCopyWithImpl<$Res, FavoriteState>;
   @useResult
-  $Res call({RequestState<FavoriteModel> favoriteState, Set<int> likedIds});
+  $Res call(
+      {RequestState<FavoriteResponseModelStoreAndDelete> favoriteStoreState,
+      RequestState<FavoriteResponseModelStoreAndDelete> favoriteDeleteState,
+      RequestState<List<WishlistModel>> favoriteGetState,
+      Set<int> likedIds});
 }
 
 /// @nodoc
@@ -51,14 +59,24 @@ class _$FavoriteStateCopyWithImpl<$Res, $Val extends FavoriteState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? favoriteState = null,
+    Object? favoriteStoreState = null,
+    Object? favoriteDeleteState = null,
+    Object? favoriteGetState = null,
     Object? likedIds = null,
   }) {
     return _then(_value.copyWith(
-      favoriteState: null == favoriteState
-          ? _value.favoriteState
-          : favoriteState // ignore: cast_nullable_to_non_nullable
-              as RequestState<FavoriteModel>,
+      favoriteStoreState: null == favoriteStoreState
+          ? _value.favoriteStoreState
+          : favoriteStoreState // ignore: cast_nullable_to_non_nullable
+              as RequestState<FavoriteResponseModelStoreAndDelete>,
+      favoriteDeleteState: null == favoriteDeleteState
+          ? _value.favoriteDeleteState
+          : favoriteDeleteState // ignore: cast_nullable_to_non_nullable
+              as RequestState<FavoriteResponseModelStoreAndDelete>,
+      favoriteGetState: null == favoriteGetState
+          ? _value.favoriteGetState
+          : favoriteGetState // ignore: cast_nullable_to_non_nullable
+              as RequestState<List<WishlistModel>>,
       likedIds: null == likedIds
           ? _value.likedIds
           : likedIds // ignore: cast_nullable_to_non_nullable
@@ -75,7 +93,11 @@ abstract class _$$FavoriteStateImplCopyWith<$Res>
       __$$FavoriteStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({RequestState<FavoriteModel> favoriteState, Set<int> likedIds});
+  $Res call(
+      {RequestState<FavoriteResponseModelStoreAndDelete> favoriteStoreState,
+      RequestState<FavoriteResponseModelStoreAndDelete> favoriteDeleteState,
+      RequestState<List<WishlistModel>> favoriteGetState,
+      Set<int> likedIds});
 }
 
 /// @nodoc
@@ -91,14 +113,24 @@ class __$$FavoriteStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? favoriteState = null,
+    Object? favoriteStoreState = null,
+    Object? favoriteDeleteState = null,
+    Object? favoriteGetState = null,
     Object? likedIds = null,
   }) {
     return _then(_$FavoriteStateImpl(
-      favoriteState: null == favoriteState
-          ? _value.favoriteState
-          : favoriteState // ignore: cast_nullable_to_non_nullable
-              as RequestState<FavoriteModel>,
+      favoriteStoreState: null == favoriteStoreState
+          ? _value.favoriteStoreState
+          : favoriteStoreState // ignore: cast_nullable_to_non_nullable
+              as RequestState<FavoriteResponseModelStoreAndDelete>,
+      favoriteDeleteState: null == favoriteDeleteState
+          ? _value.favoriteDeleteState
+          : favoriteDeleteState // ignore: cast_nullable_to_non_nullable
+              as RequestState<FavoriteResponseModelStoreAndDelete>,
+      favoriteGetState: null == favoriteGetState
+          ? _value.favoriteGetState
+          : favoriteGetState // ignore: cast_nullable_to_non_nullable
+              as RequestState<List<WishlistModel>>,
       likedIds: null == likedIds
           ? _value._likedIds
           : likedIds // ignore: cast_nullable_to_non_nullable
@@ -111,13 +143,21 @@ class __$$FavoriteStateImplCopyWithImpl<$Res>
 
 class _$FavoriteStateImpl implements _FavoriteState {
   const _$FavoriteStateImpl(
-      {this.favoriteState = const InitialState(),
-      final Set<int> likedIds = const {}})
+      {this.favoriteStoreState = const InitialState(),
+      this.favoriteDeleteState = const InitialState(),
+      this.favoriteGetState = const InitialState(),
+      final Set<int> likedIds = const <int>{}})
       : _likedIds = likedIds;
 
   @override
   @JsonKey()
-  final RequestState<FavoriteModel> favoriteState;
+  final RequestState<FavoriteResponseModelStoreAndDelete> favoriteStoreState;
+  @override
+  @JsonKey()
+  final RequestState<FavoriteResponseModelStoreAndDelete> favoriteDeleteState;
+  @override
+  @JsonKey()
+  final RequestState<List<WishlistModel>> favoriteGetState;
   final Set<int> _likedIds;
   @override
   @JsonKey()
@@ -129,7 +169,7 @@ class _$FavoriteStateImpl implements _FavoriteState {
 
   @override
   String toString() {
-    return 'FavoriteState(favoriteState: $favoriteState, likedIds: $likedIds)';
+    return 'FavoriteState(favoriteStoreState: $favoriteStoreState, favoriteDeleteState: $favoriteDeleteState, favoriteGetState: $favoriteGetState, likedIds: $likedIds)';
   }
 
   @override
@@ -137,13 +177,21 @@ class _$FavoriteStateImpl implements _FavoriteState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FavoriteStateImpl &&
-            (identical(other.favoriteState, favoriteState) ||
-                other.favoriteState == favoriteState) &&
+            (identical(other.favoriteStoreState, favoriteStoreState) ||
+                other.favoriteStoreState == favoriteStoreState) &&
+            (identical(other.favoriteDeleteState, favoriteDeleteState) ||
+                other.favoriteDeleteState == favoriteDeleteState) &&
+            (identical(other.favoriteGetState, favoriteGetState) ||
+                other.favoriteGetState == favoriteGetState) &&
             const DeepCollectionEquality().equals(other._likedIds, _likedIds));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, favoriteState,
+  int get hashCode => Object.hash(
+      runtimeType,
+      favoriteStoreState,
+      favoriteDeleteState,
+      favoriteGetState,
       const DeepCollectionEquality().hash(_likedIds));
 
   /// Create a copy of FavoriteState
@@ -157,11 +205,19 @@ class _$FavoriteStateImpl implements _FavoriteState {
 
 abstract class _FavoriteState implements FavoriteState {
   const factory _FavoriteState(
-      {final RequestState<FavoriteModel> favoriteState,
+      {final RequestState<FavoriteResponseModelStoreAndDelete>
+          favoriteStoreState,
+      final RequestState<FavoriteResponseModelStoreAndDelete>
+          favoriteDeleteState,
+      final RequestState<List<WishlistModel>> favoriteGetState,
       final Set<int> likedIds}) = _$FavoriteStateImpl;
 
   @override
-  RequestState<FavoriteModel> get favoriteState;
+  RequestState<FavoriteResponseModelStoreAndDelete> get favoriteStoreState;
+  @override
+  RequestState<FavoriteResponseModelStoreAndDelete> get favoriteDeleteState;
+  @override
+  RequestState<List<WishlistModel>> get favoriteGetState;
   @override
   Set<int> get likedIds;
 

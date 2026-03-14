@@ -48,6 +48,7 @@ class $AssetsSvgsGen {
   final SvgGenImage checkmark = const SvgGenImage('assets/svgs/checkmark.svg');
   final SvgGenImage cloudUpload =
       const SvgGenImage('assets/svgs/cloud-upload.svg');
+  final SvgGenImage delete = const SvgGenImage('assets/svgs/delete.svg');
   final SvgGenImage edit = const SvgGenImage('assets/svgs/edit.svg');
   final SvgGenImage email = const SvgGenImage('assets/svgs/email.svg');
   final SvgGenImage emailColored =

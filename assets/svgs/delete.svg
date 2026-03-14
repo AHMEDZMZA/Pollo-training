@@ -1,0 +1,22 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="deleteGradient" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF2D8D"></stop>
+      <stop offset="50%" stop-color="#A03CFF"></stop>
+      <stop offset="100%" stop-color="#00A3FF"></stop>
+    </linearGradient>
+  </defs>
+
+  <!-- Lid -->
+  <path d="M22 18H42" stroke="url(#deleteGradient)" stroke-width="4" stroke-linecap="round"></path>
+
+  <!-- Handle -->
+  <path d="M27 18L29 14H35L37 18" stroke="url(#deleteGradient)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+
+  <!-- Trash body -->
+  <path d="M20 22L22.2 46C22.5 49 24.8 51 27.8 51H36.2C39.2 51 41.5 49 41.8 46L44 22" stroke="url(#deleteGradient)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+
+  <!-- Inner lines -->
+  <path d="M28 28V42" stroke="url(#deleteGradient)" stroke-width="4" stroke-linecap="round"></path>
+  <path d="M36 28V42" stroke="url(#deleteGradient)" stroke-width="4" stroke-linecap="round"></path>
+</svg>

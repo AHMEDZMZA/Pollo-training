@@ -43,21 +43,26 @@ class ProductDetailsHeader extends StatelessWidget {
       actions: [
         BlocBuilder<FavoriteCubit, FavoriteState>(
           buildWhen: (previous, current) =>
-          previous.likedIds.contains(productDetailsModel.id) !=
+              previous.likedIds.contains(productDetailsModel.id) !=
               current.likedIds.contains(productDetailsModel.id),
           builder: (context, state) {
             final isLiked = state.likedIds.contains(productDetailsModel.id);
             return GestureDetector(
-              onTap: () => context
-                  .read<FavoriteCubit>()
-                  .likeProduct(productDetailsModel.id),
+              onTap: () {
+                final cubit = context.read<FavoriteCubit>();
+                if (cubit.state.likedIds.contains(productDetailsModel.id)) {
+                  cubit.deleteFavoriteProduct(productDetailsModel.id);
+                } else {
+                  cubit.storeFavoriteProduct(productDetailsModel.id);
+                }
+              },
               child: AnimationWrapper(
                 child: SvgPicture.asset(
                   isLiked ? AppSvgs.heartFill : AppSvgs.heartOutlined,
                   width: 24.w,
                   height: 24.h,
                   colorFilter:
-                  const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                      const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                 ),
               ),
             );

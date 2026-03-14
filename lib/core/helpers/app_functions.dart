@@ -45,4 +45,13 @@ class AppFunctions {
   static String getCurrentLanguage(BuildContext context) {
     return context.locale.languageCode;
   }
+
+  static int getDaysAgo(String createdAt) {
+    try {
+      final date = DateTime.parse(createdAt);
+      return DateTime.now().difference(date).inDays;
+    } catch (_) {
+      return 0;
+    }
+  }
 }

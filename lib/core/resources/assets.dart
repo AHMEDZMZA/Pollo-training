@@ -55,4 +55,6 @@ class AppSvgs {
   static const String edit = 'assets/svgs/edit.svg';
   static const String questionMark = 'assets/svgs/question-mark-circle.svg';
   static const String unlock = 'assets/svgs/unlock.svg';
+  static const String delete = 'assets/svgs/delete.svg';
+
 }

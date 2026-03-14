@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pollo/core/helpers/app_functions.dart';
@@ -8,12 +9,17 @@ import 'package:pollo/core/resources/assets.dart';
 import 'package:pollo/core/resources/colors.dart';
 import 'package:pollo/core/resources/styles.dart';
 import 'package:pollo/core/widgets/star_rating.dart';
+import '../../../data/model/favorite_response_model.dart';
+import '../../manager/favorite_cubit.dart';
 
 class FavoriteListViewItem extends StatelessWidget {
-  const FavoriteListViewItem({super.key});
+  const FavoriteListViewItem({super.key, required this.wishlist});
+
+  final WishlistModel wishlist;
 
   @override
   Widget build(BuildContext context) {
+    final product = wishlist.product;
     return Container(
       height: 155.h,
       decoration: BoxDecoration(
@@ -23,16 +29,16 @@ class FavoriteListViewItem extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-            // borderRadius: BorderRadiusGeometry.horizontal(
-            //   left: AppFunctions.isEnglish(context) ? Radius.circular(8.r) : null,
-            //   right: AppFunctions.isEnglish(context) ? null : Radius.circular(8.r),
-            // ),
             borderRadius: BorderRadius.horizontal(
-              left: AppFunctions.isEnglish(context) ? Radius.circular(8.r) : Radius.zero,
-              right: AppFunctions.isEnglish(context) ? Radius.zero : Radius.circular(8.r),
-               ),
-            child: Image.asset(
-              AppImages.cat,
+              left: AppFunctions.isEnglish(context)
+                  ? Radius.circular(8.r)
+                  : Radius.zero,
+              right: AppFunctions.isEnglish(context)
+                  ? Radius.zero
+                  : Radius.circular(8.r),
+            ),
+            child: Image.network(
+              product.image,
               height: 155.h,
               width: 130.w,
               fit: BoxFit.cover,
@@ -50,36 +56,39 @@ class FavoriteListViewItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'White Cat',
+                          product.name,
                           style: TextStyles.style16Medium(),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      SvgPicture.asset(
-                        AppSvgs.heartFill,
-                        width: 24.r,
-                        height: 24.r,
+                      GestureDetector(
+                        onTap: () => context
+                            .read<FavoriteCubit>()
+                            .deleteFavoriteProduct(wishlist.id),
+                        child: SvgPicture.asset(AppSvgs.heartFill),
                       ),
                     ],
                   ),
                   Text(
-                    '${context.tr(LocaleKeys.price)} 500 L.E',
+                    '${context.tr(LocaleKeys.price)} ${product.price} L.E',
                     style: TextStyles.style16Medium(),
                   ),
                   StarRating(
-                    rating: 3.2,
+                    rating: product.reviewsAvgRating,
                     ignoreGestures: true,
                     onRatingUpdate: (value) {},
                   ),
                   Text(
-                    'Sharkia - Zagazig',
-                    style: TextStyles.style14Medium(color: AppColors.secondaryText),
+                    '${product.country.name} - ${product.state.name}',
+                    style: TextStyles.style14Medium(
+                        color: AppColors.secondaryText),
                   ),
                   Text(
                     context.tr(
                       LocaleKeys.daysAgo.plural(2),
                     ),
-                    style: TextStyles.style14Medium(color: AppColors.secondaryText),
+                    style: TextStyles.style14Medium(
+                        color: AppColors.secondaryText),
                   ),
                 ],
               ),

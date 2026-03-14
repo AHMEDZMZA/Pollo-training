@@ -7,7 +7,6 @@ import 'package:pollo/core/routing/routes.dart';
 import 'package:pollo/features/products/presentation/manager/products_cubit.dart';
 import 'package:pollo/features/products/presentation/manager/products_state.dart';
 import 'package:pollo/features/products/presentation/views/widgets/products/products_list_view_item.dart';
-
 import '../../../../../favorite/presentation/manager/favorite_cubit.dart';
 
 class ProductsListView extends StatelessWidget {
@@ -50,8 +49,19 @@ class ProductsListView extends StatelessWidget {
                     child: ProductsListViewItem(
                       heroTag: heroTag,
                       productsModel: products[index],
-                      onTap: (){
-                        context.read<FavoriteCubit>().likeProduct(products[index].id);
+                      onTap: () {
+                        final cubit = context.read<FavoriteCubit>();
+                        final productId = products[index].id;
+                        if (cubit.state.likedIds.contains(productId)) {
+                          final wishlistState = cubit.state.favoriteGetState;
+                          if (wishlistState is SuccessState) {
+                            final wishlistId = wishlistState.data
+                                ?.firstWhere((e) => e.product.id == productId).id;
+                            cubit.deleteFavoriteProduct(wishlistId!);
+                          }
+                        } else {
+                          cubit.storeFavoriteProduct(productId);
+                        }
                       },
                     ),
                   );

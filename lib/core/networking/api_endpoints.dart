@@ -37,4 +37,9 @@ class ApiEndpoints {
 
   static String productsLike(int id) => '/products/$id/like';
   static const String productsUpdate = '/products/update/266';
+/// <---------------------------------------------------------------------------->
+/// Wishlists
+  static const String wishlistList = '/wishlists/list';
+  static const String wishlistCreate = '/wishlists/store';
+  static wishlistsDestroy(int id) => '/wishlists/destroy/$id';
 }

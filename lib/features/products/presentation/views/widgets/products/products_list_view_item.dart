@@ -18,12 +18,14 @@ class ProductsListViewItem extends StatelessWidget {
   const ProductsListViewItem({
     super.key,
     required this.heroTag,
-    required this.productsModel, this.onTap,
+    required this.productsModel,
+    this.onTap,
   });
 
   final String heroTag;
   final ListProductsModel productsModel;
   final void Function()? onTap;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -71,12 +73,18 @@ class ProductsListViewItem extends StatelessWidget {
                         ),
                       ),
                       BlocBuilder<FavoriteCubit, FavoriteState>(
+                        buildWhen: (previous, current) =>
+                            previous.likedIds.contains(productsModel.id) !=
+                            current.likedIds.contains(productsModel.id),
                         builder: (context, state) {
-                          final isLiked = state.likedIds.contains(productsModel.id);
+                          final isLiked =
+                              state.likedIds.contains(productsModel.id);
                           return GestureDetector(
                             onTap: onTap,
                             child: SvgPicture.asset(
-                              isLiked ? AppSvgs.heartFill : AppSvgs.heartOutlined,
+                              isLiked
+                                  ? AppSvgs.heartFill
+                                  : AppSvgs.heartOutlined,
                               width: 24.r,
                               height: 24.r,
                             ),
@@ -101,7 +109,8 @@ class ProductsListViewItem extends StatelessWidget {
                   ),
                   Text(
                     context.tr(
-                      LocaleKeys.daysAgo.plural(2),
+                      LocaleKeys.daysAgo.plural(
+                          AppFunctions.getDaysAgo(productsModel.createdAt)),
                     ),
                     style: TextStyles.style14Medium(
                         color: AppColors.secondaryText),
