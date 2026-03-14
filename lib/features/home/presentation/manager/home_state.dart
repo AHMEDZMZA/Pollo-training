@@ -9,6 +9,7 @@ part 'home_state.freezed.dart';
 abstract class HomeState with _$HomeState {
   const factory HomeState({
     @Default(0) int activeIndex,
+    @Default('') String searchQuery,
     @Default(InitialState()) RequestState<List<TopLevelCategoriesListModel>> categoriesState,
     @Default(InitialState()) RequestState<List<SubCategoryModel>> subCategoriesState,
   }) = _HomeState;

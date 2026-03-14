@@ -17,11 +17,21 @@ class HomeGridViewBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
-        buildWhen: RequestStateWhen.changed((state) => state.categoriesState),
-        builder: (context, state) {
-          return state.categoriesState.when(
-            onLoading: () => const Center(child: CircularProgressIndicator()),
-            onSuccess: (categories) => Expanded(
+      buildWhen: (previous, current) =>
+      previous.categoriesState != current.categoriesState ||
+          previous.searchQuery != current.searchQuery,
+      builder: (context, state) {
+        return state.categoriesState.when(
+          onLoading: () => const Center(child: CircularProgressIndicator()),
+          onSuccess: (categories) {
+            final filtered = state.searchQuery.isEmpty
+                ? categories
+                : categories
+                .where((e) => e.name.toLowerCase()
+                .contains(state.searchQuery.toLowerCase()))
+                .toList();
+
+            return Expanded(
               child: GridView.builder(
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -30,24 +40,26 @@ class HomeGridViewBuilder extends StatelessWidget {
                   crossAxisSpacing: 16.w,
                   childAspectRatio: 104 / 95,
                 ),
-                itemCount: categories.length,
+                itemCount: filtered.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
                       context.pushNamed(Routes.homeSubcategory, arguments: {
-                        'id': categories[index].id,
-                        'name': categories[index].name,
+                        'id': filtered[index].id,
+                        'name': filtered[index].name,
                       });
                     },
                     child: HomeGridViewItem(
-                      topLevelCategoriesListModel: categories[index],
+                      topLevelCategoriesListModel: filtered[index],
                     ),
                   );
                 },
               ),
-            ),
-            onFailure: (error) => ErrorWidget(error),
-          );
-        });
+            );
+          },
+          onFailure: (error) => ErrorWidget(error),
+        );
+      },
+        );
   }
 }

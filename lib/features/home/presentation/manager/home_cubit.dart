@@ -17,6 +17,10 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(activeIndex: index));
   }
 
+  void searchCategories(String query) {
+    emit(state.copyWith(searchQuery: query));
+  }
+
   Future<void> getTopLevelCategoriesList() async {
     emit(state.copyWith(categoriesState: const LoadingState()));
     final result = await repoHome.getTopLevelCategoriesList();

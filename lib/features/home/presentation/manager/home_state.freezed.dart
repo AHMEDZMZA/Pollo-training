@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$HomeState {
   int get activeIndex => throw _privateConstructorUsedError;
+  String get searchQuery => throw _privateConstructorUsedError;
   RequestState<List<TopLevelCategoriesListModel>> get categoriesState =>
       throw _privateConstructorUsedError;
   RequestState<List<SubCategoryModel>> get subCategoriesState =>
@@ -36,6 +37,7 @@ abstract class $HomeStateCopyWith<$Res> {
   @useResult
   $Res call(
       {int activeIndex,
+      String searchQuery,
       RequestState<List<TopLevelCategoriesListModel>> categoriesState,
       RequestState<List<SubCategoryModel>> subCategoriesState});
 }
@@ -56,6 +58,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   @override
   $Res call({
     Object? activeIndex = null,
+    Object? searchQuery = null,
     Object? categoriesState = null,
     Object? subCategoriesState = null,
   }) {
@@ -64,6 +67,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.activeIndex
           : activeIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      searchQuery: null == searchQuery
+          ? _value.searchQuery
+          : searchQuery // ignore: cast_nullable_to_non_nullable
+              as String,
       categoriesState: null == categoriesState
           ? _value.categoriesState
           : categoriesState // ignore: cast_nullable_to_non_nullable
@@ -86,6 +93,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {int activeIndex,
+      String searchQuery,
       RequestState<List<TopLevelCategoriesListModel>> categoriesState,
       RequestState<List<SubCategoryModel>> subCategoriesState});
 }
@@ -104,6 +112,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? activeIndex = null,
+    Object? searchQuery = null,
     Object? categoriesState = null,
     Object? subCategoriesState = null,
   }) {
@@ -112,6 +121,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.activeIndex
           : activeIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      searchQuery: null == searchQuery
+          ? _value.searchQuery
+          : searchQuery // ignore: cast_nullable_to_non_nullable
+              as String,
       categoriesState: null == categoriesState
           ? _value.categoriesState
           : categoriesState // ignore: cast_nullable_to_non_nullable
@@ -129,12 +142,16 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 class _$HomeStateImpl implements _HomeState {
   const _$HomeStateImpl(
       {this.activeIndex = 0,
+      this.searchQuery = '',
       this.categoriesState = const InitialState(),
       this.subCategoriesState = const InitialState()});
 
   @override
   @JsonKey()
   final int activeIndex;
+  @override
+  @JsonKey()
+  final String searchQuery;
   @override
   @JsonKey()
   final RequestState<List<TopLevelCategoriesListModel>> categoriesState;
@@ -144,7 +161,7 @@ class _$HomeStateImpl implements _HomeState {
 
   @override
   String toString() {
-    return 'HomeState(activeIndex: $activeIndex, categoriesState: $categoriesState, subCategoriesState: $subCategoriesState)';
+    return 'HomeState(activeIndex: $activeIndex, searchQuery: $searchQuery, categoriesState: $categoriesState, subCategoriesState: $subCategoriesState)';
   }
 
   @override
@@ -154,6 +171,8 @@ class _$HomeStateImpl implements _HomeState {
             other is _$HomeStateImpl &&
             (identical(other.activeIndex, activeIndex) ||
                 other.activeIndex == activeIndex) &&
+            (identical(other.searchQuery, searchQuery) ||
+                other.searchQuery == searchQuery) &&
             (identical(other.categoriesState, categoriesState) ||
                 other.categoriesState == categoriesState) &&
             (identical(other.subCategoriesState, subCategoriesState) ||
@@ -161,8 +180,8 @@ class _$HomeStateImpl implements _HomeState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, activeIndex, categoriesState, subCategoriesState);
+  int get hashCode => Object.hash(runtimeType, activeIndex, searchQuery,
+      categoriesState, subCategoriesState);
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -176,12 +195,15 @@ class _$HomeStateImpl implements _HomeState {
 abstract class _HomeState implements HomeState {
   const factory _HomeState(
           {final int activeIndex,
+          final String searchQuery,
           final RequestState<List<TopLevelCategoriesListModel>> categoriesState,
           final RequestState<List<SubCategoryModel>> subCategoriesState}) =
       _$HomeStateImpl;
 
   @override
   int get activeIndex;
+  @override
+  String get searchQuery;
   @override
   RequestState<List<TopLevelCategoriesListModel>> get categoriesState;
   @override
